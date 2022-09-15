@@ -5,15 +5,27 @@
  *      Author: Bjarki
  */
 
+// #include "delay.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
-// #include "delay.h"
-#include "util/delay.h"
+#include <util/delay.h>
+#include <digital_out.h>
+#include <digital_in.h>
+#include <encoder.h>
+
+
 #define DES_LOC 350
+
+
+Digital_in encoder_c1(DDD2);
+Digital_in encoder_c2(DDD3);
+Digital_out motor_m1(DDD4);
+Digital_out motor_m2(DDD5);
+Encoder encoder(1000);
 
 char TxBuffer[32];
 int indx, len;
-int encoder = 0;
+// int encoder = 0;
 
 void Init_Uart()
 {
@@ -98,50 +110,55 @@ void UART_load_charVal_in_TxBuffer(int data)
 ISR(INT1_vect)
 {
 	int b = PIND & (1 << PIND2);
-	if (encoder >= 700 || encoder <= -700) encoder = 0;
 	if (b > 0){
-		encoder++;
+		encoder.increment();
+		encoder.speed_increment();
 	}else{
-		encoder--;
+		encoder.decrement();
+		encoder.speed_decrement();
 	}
 }
 
 
+ISR(TIMER1_COMPA_vect)
+{
+	encoder.set_speed();
+}
+
+
 int main(){
+	// Init_Uart();
 	Init_Uart();
-
-	DDRD &= (1<<DDD3); // set pin D3 as input
-	DDRD &= (1<<DDD2); // set pin D2 as input
-
-	PORTD |= (1<<DDD3); // set PD3 pullup enabled
-	EIMSK |= (1<<INT1); // external interrupt mask register for INT1 interrupt vector
-	EICRA |= (1<<ISC10) | (1<<ISC11); // falling + rising edge interrupt requests
-
-	asm("sei"); // enable interrupts
-
+	encoder.timer_msec(1000);
+	encoder_c1.init();
+	encoder_c2.init();
+	motor_m1.init();
+	motor_m2.init();
+	
+	motor_m1.set_hi();
+	motor_m2.set_lo();
+	// // PORTD |= 1<<DDD4;
+	// PORTD &= ~(1<<DDD5);
 	while (1){
-		while ((encoder < DES_LOC  || encoder > DES_LOC ))
-		{
+		// if (counter % 2 == 0){
+		// 	motor_m1.set_hi();
+		// 	motor_m2.set_lo();
+		// }else{
+		// 	motor_m1.set_lo();
+		// 	motor_m2.set_lo();
+		// }
 
-			while (encoder < DES_LOC){ // forwards (encoder++)
-				PORTD |= 1<<DDD4;
-				PORTD &= ~(1<<DDD5);
-			}
-			PORTD &= ~(1<<DDD4);
-			PORTD &= ~(1<<DDD5);
 
-			while (encoder > DES_LOC){ // backwards (encoder--)
-				PORTD &= ~(1<<DDD4);
-				PORTD |= 1<<DDD5;
-			}
-			PORTD &= ~(1<<DDD4);
-			PORTD &= ~(1<<DDD5);
-
-		}
 		_delay_ms(1); // delay 1 ms
-		UART_load_charVal_in_TxBuffer(encoder); // load encoder value to transmit
+		UART_load_charVal_in_TxBuffer(encoder.speed()); // load encoder value to transmit
 		UART_transmit_TxBuffer(); // transmit encoder value over UART
 		reset_TxBuffer(); // reset transmit buffer
+
+		// _delay_ms(1); // delay 1 ms
+		// UART_load_charVal_in_TxBuffer(encoder.position()); // load encoder value to transmit
+		// UART_transmit_TxBuffer(); // transmit encoder value over UART
+		// reset_TxBuffer(); // reset transmit buffer
+
 	}
 
 	return 0;
