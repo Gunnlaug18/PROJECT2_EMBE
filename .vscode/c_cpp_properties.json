@@ -8,29 +8,29 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "c:/Users/bjark/OneDrive/HR/HR 9 - önn/Embedded Systems/Projects/Project 2/include",
-                "c:/Users/bjark/OneDrive/HR/HR 9 - önn/Embedded Systems/Projects/Project 2/src",
-                "C:/Users/bjark/.platformio/packages/framework-arduino-avr/cores/arduino",
-                "C:/Users/bjark/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
-                "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "c:/Users/Gunnl/OneDrive/Documents/9.onn/embedded_system/Project_2/PROJECT2_EMBE/include",
+                "c:/Users/Gunnl/OneDrive/Documents/9.onn/embedded_system/Project_2/PROJECT2_EMBE/src",
+                "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
+                "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 ""
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "c:/Users/bjark/OneDrive/HR/HR 9 - önn/Embedded Systems/Projects/Project 2/include",
-                    "c:/Users/bjark/OneDrive/HR/HR 9 - önn/Embedded Systems/Projects/Project 2/src",
-                    "C:/Users/bjark/.platformio/packages/framework-arduino-avr/cores/arduino",
-                    "C:/Users/bjark/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
-                    "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
-                    "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                    "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                    "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                    "C:/Users/bjark/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "c:/Users/Gunnl/OneDrive/Documents/9.onn/embedded_system/Project_2/PROJECT2_EMBE/include",
+                    "c:/Users/Gunnl/OneDrive/Documents/9.onn/embedded_system/Project_2/PROJECT2_EMBE/src",
+                    "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
+                    "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "C:/Users/Gunnl/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     ""
                 ]
             },
@@ -45,7 +45,7 @@
             ],
             "cStandard": "c11",
             "cppStandard": "c++11",
-            "compilerPath": "C:/Users/bjark/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerPath": "C:/Users/Gunnl/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
             "compilerArgs": [
                 "-mmcu=atmega328p",
                 ""

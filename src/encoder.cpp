@@ -7,6 +7,7 @@ Encoder::Encoder(int speed_tim){
 	EICRA |= (1<<ISC10) | (1<<ISC11); // falling + rising edge interrupt requests
     asm("sei"); // enable interrupts
     speed_time = speed_tim;
+
 }
 
 void Encoder::increment(){
@@ -34,7 +35,7 @@ float Encoder::speed(){
 }
 
 void Encoder::set_speed(){
-    speed_value = speed_counter/(speed_time/1000);
+    speed_value = (1000.0*speed_counter)/(speed_time);
     speed_counter = 0;
 }
 

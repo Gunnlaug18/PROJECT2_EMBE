@@ -14,18 +14,15 @@
 #include <encoder.h>
 
 
-#define DES_LOC 350
-
-
 Digital_in encoder_c1(DDD2);
 Digital_in encoder_c2(DDD3);
 Digital_out motor_m1(DDD4);
 Digital_out motor_m2(DDD5);
 Encoder encoder(1000);
+int counter = 0;
 
 char TxBuffer[32];
 int indx, len;
-// int encoder = 0;
 
 void Init_Uart()
 {
@@ -117,6 +114,7 @@ ISR(INT1_vect)
 		encoder.decrement();
 		encoder.speed_decrement();
 	}
+	// counter +=1;
 }
 
 
@@ -149,15 +147,39 @@ int main(){
 		// }
 
 
+		// _delay_ms(1); // delay 1 ms
+		// counter +=1;
+
+		// // UART_load_charVal_in_TxBuffer(encoder.speed()); // load encoder value to transmit
+		// // UART_transmit_TxBuffer(); // transmit encoder value over UART
+		// // reset_TxBuffer(); // reset transmit buffer
+
+
+
+
+		// if (encoder.speed() >= 1300*0.63){
+		// 	UART_load_charVal_in_TxBuffer(counter); // load encoder value to transmit
+		// 	UART_transmit_TxBuffer(); // transmit encoder value over UART
+		// 	reset_TxBuffer(); // reset transmit buffer
+			
+		// 	motor_m1.set_lo();
+		// 	motor_m2.set_lo();
+		// 	_delay_ms(1000);
+		// 	counter = 0;
+
+		// }else if (counter ==0 || counter ==1)
+		// {
+		// 	motor_m1.set_hi();
+		// 	motor_m2.set_lo();
+		// }
+
+
+
+		
 		_delay_ms(1); // delay 1 ms
 		UART_load_charVal_in_TxBuffer(encoder.speed()); // load encoder value to transmit
 		UART_transmit_TxBuffer(); // transmit encoder value over UART
 		reset_TxBuffer(); // reset transmit buffer
-
-		// _delay_ms(1); // delay 1 ms
-		// UART_load_charVal_in_TxBuffer(encoder.position()); // load encoder value to transmit
-		// UART_transmit_TxBuffer(); // transmit encoder value over UART
-		// reset_TxBuffer(); // reset transmit buffer
 
 	}
 
