@@ -1,5 +1,3 @@
-#include <avr/io.h>
-
 class Encoder {
     public: 
         Encoder(int speed_time);

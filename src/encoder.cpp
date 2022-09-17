@@ -6,7 +6,7 @@ Encoder::Encoder(int speed_tim){
     EIMSK |= (1<<INT1); // external interrupt mask register for INT1 interrupt vector
 	EICRA |= (1<<ISC10) | (1<<ISC11); // falling + rising edge interrupt requests
     asm("sei"); // enable interrupts
-    speed_time = speed_tim;
+    speed_time = (float) speed_tim;
 }
 
 void Encoder::increment(){
@@ -34,7 +34,8 @@ float Encoder::speed(){
 }
 
 void Encoder::set_speed(){
-    speed_value = speed_counter/(speed_time/1000);
+    // speed_value= (((speed_counter*1000.0/ speed_time*1.0)) / 1400.0) * 60.0; // revolutions
+    speed_value = (1000.0*speed_counter)/(speed_time*1.0); // pulses
     speed_counter = 0;
 }
 
