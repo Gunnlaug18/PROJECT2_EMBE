@@ -1,20 +1,9 @@
-/*
- * main.c
- *
- *  Created on: 31. jan. 2022
- *      Author: Bjarki
- */
-
-// #include "delay.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <digital_out.h>
 #include <digital_in.h>
 #include <encoder.h>
-
-
-#define DES_LOC 350
 
 
 Digital_in encoder_c1(DDD2);
@@ -24,15 +13,15 @@ Digital_out motor_m2(DDD5);
 Encoder encoder(1000);
 
 char TxBuffer[32];
-int indx, len;
-// int encoder = 0;
+int indx, len, duty_cycle, intr_duty_cycle;;
+
 
 void Init_Uart()
 {
 	// 57600 baudrate
 	UBRR0H = 0;
 	UBRR0L = 16;
-	UCSR0B = (1<<RXEN0) |(1<<TXEN0);// |(1<<TXCIE0);
+	UCSR0B = (1<<RXEN0) |(1<<TXEN0);
 	UCSR0C = (1<<USBS0) |(3<<UCSZ00);
 	indx = len = 0;
 }
@@ -93,10 +82,6 @@ void UART_load_string_in_TxBuffer(char s[])
 		TxBuffer[len] = s[len];
 		len++;
 	}
-
-	TxBuffer[len] = '\r';
-	TxBuffer[len+1] = '\n';
-	len += 2;
 }
 
 void UART_load_charVal_in_TxBuffer(int data)
@@ -106,6 +91,31 @@ void UART_load_charVal_in_TxBuffer(int data)
 	UART_load_string_in_TxBuffer(temp);
 }
 
+
+
+void pwm_init(){
+    TCCR0A = (1<< COM0A1) | (1 << WGM00) | (1 << WGM01);
+    TIMSK0 = (1 << TOIE0);
+    TCCR0B = (1 << CS00)|(1 << CS02);
+    DDRD |= 1 << DDD6;
+}
+
+void pwm(int duty_cycle)
+{
+	intr_duty_cycle = duty_cycle;
+    OCR0A = (duty_cycle); //Put the correct duty cycle into the PWM register (simplified)
+}
+
+//Interrupt so that the PWM signal can be changed.
+ISR(TIMER0_OVF_vect)
+{
+	OCR0A = (intr_duty_cycle);
+}
+
+ISR(TIMER1_COMPA_vect)
+{
+	encoder.set_speed();
+}
 
 ISR(INT1_vect)
 {
@@ -120,15 +130,26 @@ ISR(INT1_vect)
 }
 
 
-ISR(TIMER1_COMPA_vect)
-{
-	encoder.set_speed();
+void send_uart_int(int value){
+	UART_load_charVal_in_TxBuffer(value); // load encoder value to transmit
+	TxBuffer[len] = '\r';
+	TxBuffer[len+1] = '\n';
+	len += 2;
+	UART_transmit_TxBuffer(); // transmit encoder value over UART
+	reset_TxBuffer(); // reset transmit buffer
+}
+
+void send_uart_str(char s[]){
+	UART_load_string_in_TxBuffer(s); // load encoder value to transmit
+	UART_transmit_TxBuffer(); // transmit encoder value over UART
+	reset_TxBuffer(); // reset transmit buffer
 }
 
 
 int main(){
 	// Init_Uart();
 	Init_Uart();
+	pwm_init();
 	encoder.timer_msec(1000);
 	encoder_c1.init();
 	encoder_c2.init();
